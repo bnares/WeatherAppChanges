@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="350.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <MenuBar layoutY="1.0" prefHeight="25.0" prefWidth="441.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <VBox layoutX="169.0" layoutY="100.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+         <children>
+            <HBox alignment="TOP_CENTER" maxHeight="40.0" prefHeight="40.0" prefWidth="346.0">
+               <children>
+                  <Label fx:id="textFieldLabel" text="City Name">
+                     <padding>
+                        <Insets right="15.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="cityNameTextField" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="173.0">
+                     <opaqueInsets>
+                        <Insets left="5.0" />
+                     </opaqueInsets>
+                  </TextField>
+                  <Button mnemonicParsing="false"  onAction="#findCityButton" text="Apply Button">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="5.0" top="10.0" />
+               </padding>
+            </HBox>
+            <Label fx:id="cityNameLabel" alignment="CENTER" contentDisplay="TOP" text="City Name" textFill="WHITE">
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+               <font>
+                  <Font size="17.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="250.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="30.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="titleDayWeather" text="DAY WEATHER" textFill="GOLD">
+                     <HBox.margin>
+                        <Insets left="100.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="titleNightWeather" text="NIGHT WEATHER" textFill="BLUE">
+                     <HBox.margin>
+                        <Insets left="300.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets top="15.0" />
+               </padding>
+            </HBox>
+            <ScrollPane fx:id="scrollPane" prefHeight="300.0" prefWidth="800.0">
+               <content>
+                  <AnchorPane fx:id="anchorPane" minHeight="0.0" minWidth="0.0" prefHeight="1000.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="800.0">
+                           <children>
+                              <HBox fx:id="firstDayMainHbox" alignment="TOP_CENTER" prefHeight="192.0">
+                                 <children>
+                                    <HBox fx:id="firstDayHbox" prefHeight="100.0">
+                                       <children>
+                                          <ImageView fx:id="firstDayImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="http://openweathermap.org/img/wn/10d@2x.png" />
+                                             </image>
+                                          </ImageView>
+                                          <VBox prefHeight="192.0" prefWidth="207.0">
+                                             <children>
+                                                <Label fx:id="firstDayTiitle" alignment="TOP_LEFT" prefHeight="28.0" prefWidth="226.0" text="First Day" textAlignment="CENTER" textFill="WHITE">
+                                                   <padding>
+                                                      <Insets left="10.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="firstDayTemp" text="Daily Tempture: " textFill="WHITE">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="8.0" top="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="firstDayFeelsLikeTemp" layoutX="10.0" layoutY="10.0" text="Feels Liike: " textFill="WHITE">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="8.0" top="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="firstDayTempMin" layoutX="10.0" layoutY="10.0" text="Tempture Min: " textFill="WHITE">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="8.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="firstDayTempMax" layoutX="10.0" layoutY="27.0" text="Tempture max: " textFill="WHITE">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="8.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="firstDayPressure" layoutX="10.0" layoutY="45.0" text="Pressure:" textFill="WHITE">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="8.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="firstDayHumidity" layoutX="10.0" layoutY="62.0" text="Humidity:" textFill="WHITE">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="8.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="firstDayDesc" layoutX="10.0" layoutY="79.0" text="Description:" textFill="WHITE">
+                                                   <padding>
+                                                      <Insets left="8.0" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" top="10.0" />
+                                             </padding>
+                                             <HBox.margin>
+                                                <Insets bottom="10.0" top="10.0" />
+                                             </HBox.margin>
+                                          </VBox>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </HBox>
+                                    <HBox fx:id="firstNightHbox" prefHeight="100.0">
+                                       <children>
+                                          <ImageView fx:id="firstNightImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="https://openweathermap.org/img/wn/01n@2x.png" />
+                                             </image>
+                                          </ImageView>
+                                          <VBox prefHeight="192.0" prefWidth="207.0">
+                                             <children>
+                                                <Label fx:id="firstNightTiitle" prefHeight="17.0" prefWidth="126.0" text="First NIght" textFill="WHITE">
+                                                   <padding>
+                                                      <Insets left="8.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="firstNightTemp" text="Daily Tempture: " textFill="WHITE">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="8.0" top="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="firstNightFeelsLikeTemp" layoutX="10.0" layoutY="10.0" text="Feels Like: " textFill="WHITE">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="8.0" top="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="firstNightTempMin" layoutX="10.0" layoutY="10.0" text="Tempture Min: " textFill="WHITE">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="8.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="firstNIghtTempMax" layoutX="10.0" layoutY="27.0" text="Tempture max: " textFill="WHITE">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="8.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="firstNightPressure" layoutX="10.0" layoutY="45.0" text="Pressure:" textFill="WHITE">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="8.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="firstNightHumidity" layoutX="10.0" layoutY="62.0" text="Humidity:" textFill="WHITE">
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="8.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="firstNightDesc" layoutX="10.0" layoutY="79.0" text="Description:" textFill="WHITE">
+                                                   <padding>
+                                                      <Insets left="8.0" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" top="10.0" />
+                                             </padding>
+                                             <HBox.margin>
+                                                <Insets bottom="10.0" top="10.0" />
+                                             </HBox.margin>
+                                          </VBox>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </HBox>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </ScrollPane>
+            <Label fx:id="errorLabel" textFill="#ed0404">
+               <font>
+                  <Font name="Artifakt Element Bold" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="300.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -10,4 +10,5 @@ module ImproveWeatherApp {
     opens controllers;
     opens view;
     opens main;
+    opens exception;
 }

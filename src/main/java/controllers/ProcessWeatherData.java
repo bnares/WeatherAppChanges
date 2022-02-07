@@ -27,14 +27,15 @@ public class ProcessWeatherData {
                 WeatherClient weatherClient = new WeatherClient(date, icon, description,temp,humidity,pressure,feelsLike);
                 object.add(weatherClient);
             }
-            return object;
+
         }catch (Exception e){
-            String error =(String) this.introData.get(0).get("error");
+            //String error =(String) this.introData.get(0).get("error");
             System.out.println(e.getMessage());
-            ErrorMessages errorMessages = new ErrorMessages();
-            errorMessages.setError(error);
-            object.add(errorMessages);
-            return object;
+            //ErrorMessages errorMessages = new ErrorMessages();
+            //errorMessages.setError(error);
+            //object.add(errorMessages);
+            //return object;
         }
+        return object;
     }
 }

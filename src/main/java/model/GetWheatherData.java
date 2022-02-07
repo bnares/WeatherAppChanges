@@ -1,14 +1,14 @@
 package model;
 
+import exception.ApiException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -19,18 +19,20 @@ public class GetWheatherData {
         this.cityName = city;
     }
 
-    private String getCurrentDayWeatherData(){
+    private String getCurrentDayWeatherData() throws IOException {
+        StringBuffer response;
         String textField = cityName;
-        String url = "https://api.openweathermap.org/data/2.5/weather?q="+ URLEncoder.encode(textField, StandardCharsets.UTF_8)+"&appid=ac3ab545014509bfe6bd90e10adf9a94&cnt=46&units=metric";
-        StringBuffer response = connectWithNetWebForWheatherData(url);
+        String url = "https://api.openweathermap.org/data/2.5/weather?q=" + URLEncoder.encode(textField, StandardCharsets.UTF_8) + "&appid=ac3ab545014509bfe6bd90e10adf9a94&cnt=46&units=metric";
+        response = connectWithNetWebForWheatherData(url);
+        //System.out.println(response.toString());
         return response.toString();
     }
 
-    public String getCurrentDayWeatherForecast(){
+    public String getCurrentDayWeatherForecast() throws IOException {
         return getCurrentDayWeatherData();
     }
 
-    private String sendRequestForFourDaysWheatherData(){
+    private String sendRequestForFourDaysWheatherData() throws IOException {
 
         String url = "https://api.openweathermap.org/data/2.5/forecast?q="+ URLEncoder.encode(this.cityName, StandardCharsets.UTF_8)+"&appid=ac3ab545014509bfe6bd90e10adf9a94&cnt=46&units=metric";
         StringBuffer response = connectWithNetWebForWheatherData(url);
@@ -38,13 +40,14 @@ public class GetWheatherData {
 
     }
 
-    public String getFourDaysWheatherData(){
+    public String getFourDaysWheatherData() throws IOException {
         return sendRequestForFourDaysWheatherData();
     }
 
-    private StringBuffer connectWithNetWebForWheatherData(String url){
+    private StringBuffer connectWithNetWebForWheatherData(String url) throws IOException {
         URL adress= null;
-        try{
+        StringBuffer response = new StringBuffer();
+
             adress = new URL(url);
             URLConnection con = adress.openConnection();
             HttpURLConnection http = (HttpURLConnection)con;
@@ -53,25 +56,23 @@ public class GetWheatherData {
                     new InputStreamReader(http.getInputStream())
             );
             String inputLine;
-            StringBuffer response = new StringBuffer();
             while ((inputLine = in.readLine()) != null){
                 response.append(inputLine);
             }
             in.close();
+            //System.out.println(response);
 
-            return response;
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            return new StringBuffer("Sth wrong with the Internet connection");
-        }
+
+        return response;
     }
 
     public List<Map> collectDailyWeatherForecast(String weatherData){
+        List<Map> weatherClientsDayData = new LinkedList<>();
         try{
             JSONObject jsonObject = new JSONObject(weatherData);
             JSONArray jsonArray = jsonObject.getJSONArray("weather");
             Map dayInfo = new HashMap();
-            List<Map> weatherClientsDayData = new LinkedList<>();
+
             JSONObject main = (JSONObject) jsonObject.get("main");
             dayInfo.put("date", new Date());
             dayInfo.put("temp",main.get("temp"));
@@ -82,22 +83,21 @@ public class GetWheatherData {
             dayInfo.put("pressure", main.get("pressure"));
             dayInfo.put("feelsLike", main.get("feels_like"));
             weatherClientsDayData.add(dayInfo);
-            return weatherClientsDayData;
+
         }catch (Exception e){
             System.out.println(e.getMessage());
-            Map data = new HashMap<String ,String>();
-            data.put("error", "Cant dwonload daily data. such city does not exist");
-            List<Map> errorInfo = new LinkedList<>();
-            errorInfo.add(data);
-            return errorInfo;
+
+
         }
+        return weatherClientsDayData;
     }
 
     public List<Map> collectWeatherDataFourDaysInCollectionForm(String weatherData){
+        List<Map> weatherClientsDayData = new LinkedList<>();
         try {
             JSONObject jsonObject = new JSONObject(weatherData);
             JSONArray array = jsonObject.getJSONArray("list");
-            List<Map> weatherClientsDayData = new LinkedList<>();
+
             for (int i = 0; i < array.length(); i++) {
                 Map dayInfo = new HashMap();
                 JSONObject listJsonObject = (JSONObject) array.get(i);
@@ -117,13 +117,15 @@ public class GetWheatherData {
                     weatherClientsDayData.add(dayInfo);
                 }
             }
-            return weatherClientsDayData;
+
         } catch (Exception e){
-            Map data = new HashMap<String ,String>();
-            data.put("error", "Cant dwonload data. such city does not exist");
-            List<Map> errorInfo = new LinkedList<>();
-            errorInfo.add(data);
-            return errorInfo;
+            System.out.println(e.getMessage());
+            //Map data = new HashMap<String ,String>();
+            //data.put("error", "Cant dwonload data. such city does not exist");
+            //List<Map> errorInfo = new LinkedList<>();
+            //errorInfo.add(data);
+            //return errorInfo;
         }
+        return weatherClientsDayData;
     }
 }

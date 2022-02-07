@@ -1,5 +1,6 @@
 package controllers;
 
+import exception.ApiException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -10,6 +11,8 @@ import javafx.scene.layout.VBox;
 import model.GetWheatherData;
 import view.View;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,23 +45,27 @@ public class MainWindowController extends BaseController{
     }
 
     @FXML
-    void findCityButton() {
-
+    void findCityButton(){
+        errorLabel.setText("");
         if (cityNameTextField.getText().length()<=0 || cityNameTextField.getText().isEmpty()){
             errorLabel.setText("Fill in city name box");
         }else {
-            GetWheatherData weatherData = new GetWheatherData(cityNameTextField.getText());
-            String data = weatherData.getFourDaysWheatherData();
-            ProcessWeatherData processWeatherData = new ProcessWeatherData(weatherData.collectWeatherDataFourDaysInCollectionForm(data));
-            List<Weather> objectWeatherData = processWeatherData.createWeatherClientObject();
-            fillInWeatherMainWIndowWithData(objectWeatherData);
+
+            try {
+                GetWheatherData weatherData = new GetWheatherData(cityNameTextField.getText());
+                String data = weatherData.getFourDaysWheatherData();
+                ProcessWeatherData processWeatherData = new ProcessWeatherData(weatherData.collectWeatherDataFourDaysInCollectionForm(data));
+                List<Weather> objectWeatherData = processWeatherData.createWeatherClientObject();
+                fillInWeatherMainWIndowWithData(objectWeatherData);
+            }catch (IOException e){
+                errorLabel.setText("city \""+cityNameTextField.getText()+ "\" does not exist");
+            }
         }
     }
 
-    private void fillInWeatherMainWIndowWithData(List<Weather> data){
-        if(data.size()<2){
-            errorLabel.setText(data.get(0).getError());
-        }else {
+    private void fillInWeatherMainWIndowWithData(List<Weather> data) throws IOException {
+
+
             GetWheatherData weatherData = new GetWheatherData(cityNameTextField.getText());
             String currentDayData = weatherData.getCurrentDayWeatherForecast();
             ProcessWeatherData daylyWeatherData = new ProcessWeatherData(weatherData.collectDailyWeatherForecast(currentDayData));
@@ -75,7 +82,6 @@ public class MainWindowController extends BaseController{
             VBox thirdNightVBox = prepareVBoxWithFillInLabels(data, nightHour, thirdDay);
             VBox fourthDayVBox = prepareVBoxWithFillInLabels(data, dayHour, fourthDay);
             VBox fourthNightVBox = prepareVBoxWithFillInLabels(data, nightHour, fourthDay);
-
             HBox firstHbox = new HBox();
             HBox secondHbox = new HBox();
             HBox thirdHbox = new HBox();
@@ -90,7 +96,7 @@ public class MainWindowController extends BaseController{
             mainVbox.getChildren().addAll(firstHbox, secondHbox, thirdHbox, fourthHbox);
             setContentOfScrollPane(mainVbox);
 
-        }
+
     }
 
     private String returnDateAsString(int number){

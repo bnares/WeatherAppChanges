@@ -1,6 +1,7 @@
 package controllers;
 
 import exception.ApiException;
+import exception.FileConvertingExceptions;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -57,13 +58,15 @@ public class MainWindowController extends BaseController{
                 ProcessWeatherData processWeatherData = new ProcessWeatherData(weatherData.collectWeatherDataFourDaysInCollectionForm(data));
                 List<Weather> objectWeatherData = processWeatherData.createWeatherClientObject();
                 fillInWeatherMainWIndowWithData(objectWeatherData);
-            }catch (IOException e){
-                errorLabel.setText("city \""+cityNameTextField.getText()+ "\" does not exist");
+            }catch (ApiException | IOException ex){
+                errorLabel.setText("Can not find such city like: "+cityNameTextField.getText());
+            }catch (FileConvertingExceptions e){
+                errorLabel.setText("Cont download data. Wrong key value");
             }
         }
     }
 
-    private void fillInWeatherMainWIndowWithData(List<Weather> data) throws IOException {
+    private void fillInWeatherMainWIndowWithData(List<Weather> data) throws ApiException, IOException, FileConvertingExceptions {
 
 
             GetWheatherData weatherData = new GetWheatherData(cityNameTextField.getText());
@@ -95,7 +98,6 @@ public class MainWindowController extends BaseController{
             VBox mainVbox = new VBox();
             mainVbox.getChildren().addAll(firstHbox, secondHbox, thirdHbox, fourthHbox);
             setContentOfScrollPane(mainVbox);
-
 
     }
 

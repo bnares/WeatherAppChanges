@@ -1,7 +1,9 @@
 package model;
 
 import exception.ApiException;
+import exception.FileConvertingExceptions;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -19,54 +21,59 @@ public class GetWheatherData {
         this.cityName = city;
     }
 
-    private String getCurrentDayWeatherData() throws IOException {
+    private String getCurrentDayWeatherData() throws ApiException {
         StringBuffer response;
         String textField = cityName;
         String url = "https://api.openweathermap.org/data/2.5/weather?q=" + URLEncoder.encode(textField, StandardCharsets.UTF_8) + "&appid=ac3ab545014509bfe6bd90e10adf9a94&cnt=46&units=metric";
         response = connectWithNetWebForWheatherData(url);
-        //System.out.println(response.toString());
+
         return response.toString();
     }
 
-    public String getCurrentDayWeatherForecast() throws IOException {
+    public String getCurrentDayWeatherForecast() throws ApiException {
         return getCurrentDayWeatherData();
+
     }
 
-    private String sendRequestForFourDaysWheatherData() throws IOException {
+    private String sendRequestForFourDaysWheatherData() throws ApiException {
 
+        StringBuffer response;
         String url = "https://api.openweathermap.org/data/2.5/forecast?q="+ URLEncoder.encode(this.cityName, StandardCharsets.UTF_8)+"&appid=ac3ab545014509bfe6bd90e10adf9a94&cnt=46&units=metric";
-        StringBuffer response = connectWithNetWebForWheatherData(url);
+        response = connectWithNetWebForWheatherData(url);
         return response.toString();
 
     }
 
-    public String getFourDaysWheatherData() throws IOException {
+    public String getFourDaysWheatherData() throws ApiException {
         return sendRequestForFourDaysWheatherData();
+
     }
 
-    private StringBuffer connectWithNetWebForWheatherData(String url) throws IOException {
+    private StringBuffer connectWithNetWebForWheatherData(String url) throws ApiException {
         URL adress= null;
         StringBuffer response = new StringBuffer();
-
+        try {
             adress = new URL(url);
             URLConnection con = adress.openConnection();
-            HttpURLConnection http = (HttpURLConnection)con;
-            int responseCOde  = http.getResponseCode();
+            HttpURLConnection http = (HttpURLConnection) con;
+            int responseCOde = http.getResponseCode();
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(http.getInputStream())
             );
             String inputLine;
-            while ((inputLine = in.readLine()) != null){
+            while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
             in.close();
             //System.out.println(response);
-
+        } catch (IOException e){
+            throw new ApiException();
+        }
 
         return response;
     }
 
-    public List<Map> collectDailyWeatherForecast(String weatherData){
+    public List<Map> collectDailyWeatherForecast(String weatherData) throws FileConvertingExceptions{
         List<Map> weatherClientsDayData = new LinkedList<>();
         try{
             JSONObject jsonObject = new JSONObject(weatherData);
@@ -84,15 +91,15 @@ public class GetWheatherData {
             dayInfo.put("feelsLike", main.get("feels_like"));
             weatherClientsDayData.add(dayInfo);
 
-        }catch (Exception e){
+        }catch (JSONException e){
             System.out.println(e.getMessage());
-
+            throw new FileConvertingExceptions();
 
         }
         return weatherClientsDayData;
     }
 
-    public List<Map> collectWeatherDataFourDaysInCollectionForm(String weatherData){
+    public List<Map> collectWeatherDataFourDaysInCollectionForm(String weatherData) throws FileConvertingExceptions{
         List<Map> weatherClientsDayData = new LinkedList<>();
         try {
             JSONObject jsonObject = new JSONObject(weatherData);
@@ -118,13 +125,9 @@ public class GetWheatherData {
                 }
             }
 
-        } catch (Exception e){
+        } catch (JSONException e){
             System.out.println(e.getMessage());
-            //Map data = new HashMap<String ,String>();
-            //data.put("error", "Cant dwonload data. such city does not exist");
-            //List<Map> errorInfo = new LinkedList<>();
-            //errorInfo.add(data);
-            //return errorInfo;
+            throw new FileConvertingExceptions();
         }
         return weatherClientsDayData;
     }

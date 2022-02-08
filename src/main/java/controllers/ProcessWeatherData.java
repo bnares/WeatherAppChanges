@@ -1,5 +1,7 @@
 package controllers;
 
+import exception.CreatingObjectExcption;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +14,11 @@ public class ProcessWeatherData {
         this.introData = data;
     }
 
-    protected List<Weather> createWeatherClientObject(){
+    public List<Weather> getWeatherObject() throws CreatingObjectExcption {
+        return this.createWeatherClientObject();
+    }
+
+    private List<Weather> createWeatherClientObject() throws CreatingObjectExcption {
 
         List<Weather> object = new LinkedList<>();
         try{
@@ -28,13 +34,11 @@ public class ProcessWeatherData {
                 object.add(weatherClient);
             }
 
-        }catch (Exception e){
-            //String error =(String) this.introData.get(0).get("error");
+        }catch (NullPointerException e){
+
             System.out.println(e.getMessage());
-            //ErrorMessages errorMessages = new ErrorMessages();
-            //errorMessages.setError(error);
-            //object.add(errorMessages);
-            //return object;
+            throw new CreatingObjectExcption();
+
         }
         return object;
     }

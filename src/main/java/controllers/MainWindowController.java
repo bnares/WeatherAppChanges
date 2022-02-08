@@ -1,6 +1,7 @@
 package controllers;
 
 import exception.ApiException;
+import exception.CreatingObjectExcption;
 import exception.FileConvertingExceptions;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -18,6 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MainWindowController extends BaseController{
@@ -41,9 +43,6 @@ public class MainWindowController extends BaseController{
         super(view,fxmlFile);
     }
 
-    public String getCityNameTextField(){
-        return this.cityNameTextField.getText();
-    }
 
     @FXML
     void findCityButton(){
@@ -56,25 +55,38 @@ public class MainWindowController extends BaseController{
                 GetWheatherData weatherData = new GetWheatherData(cityNameTextField.getText());
                 String data = weatherData.getFourDaysWheatherData();
                 ProcessWeatherData processWeatherData = new ProcessWeatherData(weatherData.collectWeatherDataFourDaysInCollectionForm(data));
-                List<Weather> objectWeatherData = processWeatherData.createWeatherClientObject();
+                List<Weather> objectWeatherData = processWeatherData.getWeatherObject();
                 fillInWeatherMainWIndowWithData(objectWeatherData);
             }catch (ApiException | IOException ex){
                 errorLabel.setText("Can not find such city like: "+cityNameTextField.getText());
             }catch (FileConvertingExceptions e){
-                errorLabel.setText("Cont download data. Wrong key value");
+                errorLabel.setText("Cant download data. Wrong key value");
+            }catch (CreatingObjectExcption e){
+                errorLabel.setText("Internal error. Please contact with Help department");
             }
         }
     }
 
-    private void fillInWeatherMainWIndowWithData(List<Weather> data) throws ApiException, IOException, FileConvertingExceptions {
+    private List<VBox> prepareFirstDayVBox() throws ApiException, FileConvertingExceptions, CreatingObjectExcption {
+        GetWheatherData weatherData = new GetWheatherData(cityNameTextField.getText());
+        String currentDayData = weatherData.getCurrentDayWeatherForecast();
+        ProcessWeatherData daylyWeatherData = new ProcessWeatherData(weatherData.collectDailyWeatherForecast(currentDayData));
+        List<Weather> todaWeatherForecast = daylyWeatherData.getWeatherObject();
 
+        VBox firsDay = prepareDailyBox(todaWeatherForecast);
+        VBox firstNight = prepareDailyBox(todaWeatherForecast);
+        List<VBox> firstDayVbox = new LinkedList<>();
+        firstDayVbox.add(firsDay);
+        firstDayVbox.add(firstNight);
+        return firstDayVbox;
+    }
 
-            GetWheatherData weatherData = new GetWheatherData(cityNameTextField.getText());
-            String currentDayData = weatherData.getCurrentDayWeatherForecast();
-            ProcessWeatherData daylyWeatherData = new ProcessWeatherData(weatherData.collectDailyWeatherForecast(currentDayData));
-            List<Weather> todaWeatherForecast = daylyWeatherData.createWeatherClientObject();
-            VBox firsDay = prepareDailyBox(todaWeatherForecast);
-            VBox firstNight = prepareDailyBox(todaWeatherForecast);
+    private void fillInWeatherMainWIndowWithData(List<Weather> data) throws ApiException, IOException, FileConvertingExceptions, CreatingObjectExcption {
+
+            List<VBox> firstDayData = prepareFirstDayVBox();
+            VBox firsDay = firstDayData.get(0);
+            VBox firstNight = firstDayData.get(1);
+
             String secondDay = returnDateAsString(1);
             String thirdDay = returnDateAsString(2);
             String fourthDay = returnDateAsString(3);
@@ -85,6 +97,7 @@ public class MainWindowController extends BaseController{
             VBox thirdNightVBox = prepareVBoxWithFillInLabels(data, nightHour, thirdDay);
             VBox fourthDayVBox = prepareVBoxWithFillInLabels(data, dayHour, fourthDay);
             VBox fourthNightVBox = prepareVBoxWithFillInLabels(data, nightHour, fourthDay);
+
             HBox firstHbox = new HBox();
             HBox secondHbox = new HBox();
             HBox thirdHbox = new HBox();
@@ -98,7 +111,6 @@ public class MainWindowController extends BaseController{
             VBox mainVbox = new VBox();
             mainVbox.getChildren().addAll(firstHbox, secondHbox, thirdHbox, fourthHbox);
             setContentOfScrollPane(mainVbox);
-
     }
 
     private String returnDateAsString(int number){

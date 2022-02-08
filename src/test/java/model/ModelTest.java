@@ -70,7 +70,7 @@ public class ModelTest {
     void getCurrentDayWeatherForecastShouldReturnString() throws ApiException {
         //given
         //when
-        String city = getWheatherData.getCityName();
+
         Object ob = "{\"coord\":{\"lon\":21.0118,\"lat\":52.2298},\"weather\":[{\"id\":803,\"main\":\"Clouds\",\"description\":\"broken clouds\",\"icon\":\"04d\"}],\"base\":\"stations\",\"main\":{\"temp\":3.61,\"feels_like\":-1.54,\"temp_min\":2.88,\"temp_max\":4.39,\"pressure\":1015,\"humidity\":86},\"visibility\":10000,\"wind\":{\"speed\":7.72,\"deg\":260},\"clouds\":{\"all\":75},\"dt\":1644314337,\"sys\":{\"type\":2,\"id\":2035775,\"country\":\"PL\",\"sunrise\":1644300317,\"sunset\":1644334503},\"timezone\":3600,\"id\":756135,\"name\":\"Warsaw\",\"cod\":200}";
         given(getWheatherData.getCityName()).willReturn("Warszawa");
         given(getWheatherData.getCurrentDayWeatherForecast()).willReturn((String) ob);
@@ -78,6 +78,31 @@ public class ModelTest {
         assertThat(getWheatherData.getCurrentDayWeatherForecast(), equalTo(ob));
     }
 
-    
+    @Test
+    void getCurrentDayWeatherForecastWillThrowException() throws ApiException {
+        //given
+        //when
+        given(getWheatherData.getCurrentDayWeatherForecast()).willThrow(ApiException.class);
+        //then
+        assertThrows(ApiException.class, ()->getWheatherData.getCurrentDayWeatherForecast());
+    }
 
+    @Test
+    void getFourDaysWheatherDataShouldReturnString() throws ApiException {
+        //given
+        //when
+        String string = "pobrane dane";
+        given(getWheatherData.getFourDaysWheatherData()).willReturn(string);
+        //then
+        assertThat(getWheatherData.getFourDaysWheatherData(), equalTo(string));
+    }
+
+    @Test
+    void getFourDaysWheatherDataShouldReturnException() throws ApiException {
+        //given
+        //when
+        given(getWheatherData.getFourDaysWheatherData()).willThrow(ApiException.class);
+        //then
+        assertThrows(ApiException.class, () -> getWheatherData.getFourDaysWheatherData());
+    }
 }

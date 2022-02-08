@@ -21,12 +21,15 @@ public class GetWheatherData {
         this.cityName = city;
     }
 
+    public String getCityName() {
+        return cityName;
+    }
+
     private String getCurrentDayWeatherData() throws ApiException {
         StringBuffer response;
-        String textField = cityName;
+        String textField = this.getCityName();
         String url = "https://api.openweathermap.org/data/2.5/weather?q=" + URLEncoder.encode(textField, StandardCharsets.UTF_8) + "&appid=ac3ab545014509bfe6bd90e10adf9a94&cnt=46&units=metric";
         response = connectWithNetWebForWheatherData(url);
-
         return response.toString();
     }
 

@@ -4,6 +4,7 @@ import exception.ApiException;
 import exception.CreatingObjectExcption;
 import exception.FileConvertingExceptions;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -11,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.GetWheatherData;
+import view.Style;
 import view.View;
 
 import java.io.FileNotFoundException;
@@ -43,6 +45,9 @@ public class MainWindowController extends BaseController{
         super(view,fxmlFile);
     }
 
+    public ScrollPane getScrollPane() {
+        return scrollPane;
+    }
 
     @FXML
     void findCityButton(){
@@ -98,6 +103,7 @@ public class MainWindowController extends BaseController{
             VBox fourthDayVBox = prepareVBoxWithFillInLabels(data, dayHour, fourthDay);
             VBox fourthNightVBox = prepareVBoxWithFillInLabels(data, nightHour, fourthDay);
 
+
             HBox firstHbox = new HBox();
             HBox secondHbox = new HBox();
             HBox thirdHbox = new HBox();
@@ -109,6 +115,9 @@ public class MainWindowController extends BaseController{
             fourthHbox.getChildren().addAll(fourthDayVBox, fourthNightVBox);
 
             VBox mainVbox = new VBox();
+            System.out.println("fillInWeatherMainWIndow before MAIN");
+            mainVbox.getStylesheets().add(String.valueOf(Style.DARK));
+            System.out.println("fillInWeatherMainWIndow after main");
             mainVbox.getChildren().addAll(firstHbox, secondHbox, thirdHbox, fourthHbox);
             setContentOfScrollPane(mainVbox);
     }
@@ -124,12 +133,20 @@ public class MainWindowController extends BaseController{
 
     private VBox prepareDailyBox(List<Weather> data){
         VBox mainBax = new VBox();
+        //tutaj css oooooooooooooooooooooooooooooooooooooooooooooooo
+        System.out.println("PrepareDailyBox1");
+        mainBax.getStylesheets().add(String.valueOf(Style.DARK));
         for(int i =0; i<data.size(); i++) {
 
             WeatherClient weatherClient = (WeatherClient) data.get(i);
             String[] dateAsArray = weatherClient.splitDate(weatherClient.getDate());
             VBox weatherInfo = new VBox();
+            //tutaj css oooooooooooooooooooooooooooooooooooooooooooooooo
+            System.out.println("PrepareDailyBox2");
+            weatherInfo.getStylesheets().add(String.valueOf(Style.DARK));
             HBox wrapBox = new HBox();
+            System.out.println("PrepareDailyBox3");
+            wrapBox.getStylesheets().add(String.valueOf(Style.DARK));
             Label date = new Label();
             Label temp = new Label();
             ImageView icon = new ImageView();
@@ -154,6 +171,9 @@ public class MainWindowController extends BaseController{
     private VBox prepareVBoxWithFillInLabels(List<Weather> data, String hour, String year){
 
         VBox mainBax = new VBox();
+        //tutaj css oooooooooooooooooooooooooooooooooooo
+        System.out.println("PrepareVBox with fill in labels1");
+        mainBax.getStylesheets().add(String.valueOf(Style.DARK));
 
         for(int i =0; i<data.size(); i++){
 
@@ -163,6 +183,10 @@ public class MainWindowController extends BaseController{
             if(dateAsArray[1].endsWith(hour) && dateAsArray[0].startsWith(year)) {
                 VBox weatherInfo = new VBox();
                 HBox wrapBox = new HBox();
+                //tutaj kolejny css oooooooooooooooooooooooooooooooo
+                System.out.println("PrepareVBox with fill in labels2");
+                wrapBox.getStylesheets().add(String.valueOf(Style.DARK));
+                weatherInfo.getStylesheets().add(String.valueOf(Style.DARK));
                 Label date = new Label();
                 Label temp = new Label();
                 ImageView icon = new ImageView();
@@ -182,16 +206,27 @@ public class MainWindowController extends BaseController{
                 mainBax.getChildren().addAll(wrapBox);
             }
         }
+        VBox.setMargin(mainBax, new Insets(3,0,3,0));
         return mainBax;
     }
 
     private void setContentOfScrollPane(VBox vBox){
+        System.out.println("before scroll pane");
+        this.scrollPane.getStylesheets().add(String.valueOf(Style.DARK));
         this.scrollPane.setContent(vBox);
+        System.out.println("after scroll pane");
+        //tutaj css ooooooooooooooooooooooooooooooo
+
         this.cityNameLabel.setText(this.cityNameTextField.getText());
     }
 
+
+
     @FXML
     public void initialize(){
+        scrollPane.setPannable(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         errorLabel.setText("");
     }
 

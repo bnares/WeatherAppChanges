@@ -6,6 +6,7 @@ import controllers.Weather;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,14 +25,16 @@ public class View {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.setFullScreen(false);
-            stage.setWidth(800);
+            stage.setWidth(750);
             stage.setHeight(400);
             stage.setTitle("Weahter App");
             stage.setResizable(false);
             stage.show();
+            setCssStyle(scene, Style.DARK);
 
         }catch(IOException ex){
             System.out.println(ex.getMessage());
+            ex.printStackTrace();
 
         }catch (Exception e){
 
@@ -40,8 +43,18 @@ public class View {
 
     public void showMainWindow(){
         MainWindowController mainWindowController = new MainWindowController(this,"mainWindow.fxml");
+
         initializageStage(mainWindowController);
+
     }
 
+    private void setCssStyle(Scene scene, Style style) {
+        try {
+            scene.getStylesheets().add(getClass().getResource(style.path).toExternalForm());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("jest w css");
+        }
 
+    }
 }

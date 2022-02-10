@@ -1,0 +1,43 @@
+.root {
+    -fx-font-size: 14px;
+    -fx-font-family: sans-serif;
+    -fx-background-color: "black";
+}
+
+#scrollPane{
+    -fx-background-color: "black";
+}
+
+#anchorPane{
+    -fx-background-color: "black";
+}
+
+#cityNameLabel{
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+
+}
+
+VBox{
+    -fx-background-color: "black";
+    -fx-text-fill:"white";
+
+}
+
+HBox{
+    -fx-min-width: 400;
+    -fx-padding: 3,0,5,0;
+}
+
+ScrollPane{
+    -fx-background-color: "black";
+}
+
+Label{
+    -fx-text-fill:"white";
+}
+
+#errorLabel{
+    -fx-text-fill:"red";
+}
+

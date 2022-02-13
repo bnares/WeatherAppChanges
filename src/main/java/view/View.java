@@ -3,18 +3,21 @@ package view;
 import controllers.BaseController;
 import controllers.MainWindowController;
 import controllers.Weather;
+import exception.CssException;
+import exception.FileCantBeFoundExceptions;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
 public class View {
 
-    private void initializageStage(BaseController baseController){
+    private void initializageStage(BaseController baseController) throws CssException, FileCantBeFoundExceptions {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/"+baseController.getFxmlFile()));
 
         fxmlLoader.setController(baseController);
@@ -34,27 +37,28 @@ public class View {
 
         }catch(IOException ex){
             System.out.println(ex.getMessage());
-            ex.printStackTrace();
-
-        }catch (Exception e){
-
+            throw new FileCantBeFoundExceptions();
+        }catch (NullPointerException e){
+            throw new CssException();
         }
     }
 
     public void showMainWindow(){
         MainWindowController mainWindowController = new MainWindowController(this,"mainWindow.fxml");
-
-        initializageStage(mainWindowController);
-
+        try {
+            initializageStage(mainWindowController);
+        }catch (CssException e){
+            mainWindowController.setErrorLabel("cant find graphic file");
+        }catch (FileCantBeFoundExceptions ex){
+            mainWindowController.setErrorLabel("Cant display Main window. contact with support");
+        }
     }
 
-    private void setCssStyle(Scene scene, Style style) {
+    private void setCssStyle(Scene scene, Style style) throws CssException {
         try {
             scene.getStylesheets().add(getClass().getResource(style.path).toExternalForm());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println("jest w css");
+        }catch (NullPointerException ex){
+           throw new CssException();
         }
-
     }
 }

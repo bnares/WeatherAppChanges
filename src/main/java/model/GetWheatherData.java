@@ -35,21 +35,17 @@ public class GetWheatherData {
 
     public String getCurrentDayWeatherForecast() throws ApiException {
         return getCurrentDayWeatherData();
-
     }
 
     private String sendRequestForFourDaysWheatherData() throws ApiException {
-
         StringBuffer response;
         String url = "https://api.openweathermap.org/data/2.5/forecast?q="+ URLEncoder.encode(this.cityName, StandardCharsets.UTF_8)+"&appid=ac3ab545014509bfe6bd90e10adf9a94&cnt=46&units=metric";
         response = connectWithNetWebForWheatherData(url);
         return response.toString();
-
     }
 
     public String getFourDaysWheatherData() throws ApiException {
         return sendRequestForFourDaysWheatherData();
-
     }
 
     private StringBuffer connectWithNetWebForWheatherData(String url) throws ApiException {
@@ -68,11 +64,9 @@ public class GetWheatherData {
                 response.append(inputLine);
             }
             in.close();
-            //System.out.println(response);
         } catch (IOException e){
             throw new ApiException();
         }
-
         return response;
     }
 
@@ -82,7 +76,6 @@ public class GetWheatherData {
             JSONObject jsonObject = new JSONObject(weatherData);
             JSONArray jsonArray = jsonObject.getJSONArray("weather");
             Map dayInfo = new HashMap();
-
             JSONObject main = (JSONObject) jsonObject.get("main");
             dayInfo.put("date", new Date());
             dayInfo.put("temp",main.get("temp"));
@@ -107,7 +100,6 @@ public class GetWheatherData {
         try {
             JSONObject jsonObject = new JSONObject(weatherData);
             JSONArray array = jsonObject.getJSONArray("list");
-
             for (int i = 0; i < array.length(); i++) {
                 Map dayInfo = new HashMap();
                 JSONObject listJsonObject = (JSONObject) array.get(i);

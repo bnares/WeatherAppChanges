@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import model.GetWheatherData;
 import view.Style;
 import view.View;
@@ -31,6 +32,11 @@ public class MainWindowController extends BaseController{
 
     @FXML
     private Label errorLabel;
+
+
+    public void setErrorLabel(String errorText) {
+        this.errorLabel.setText(errorText);
+    }
 
     @FXML
     private TextField cityNameTextField;
@@ -113,11 +119,8 @@ public class MainWindowController extends BaseController{
             secondHbox.getChildren().addAll(secondDayVBox, secondNIghtVBox);
             thirdHbox.getChildren().addAll(thirdDayVBox, thirdNightVBox);
             fourthHbox.getChildren().addAll(fourthDayVBox, fourthNightVBox);
-
             VBox mainVbox = new VBox();
-            System.out.println("fillInWeatherMainWIndow before MAIN");
             mainVbox.getStylesheets().add(String.valueOf(Style.DARK));
-            System.out.println("fillInWeatherMainWIndow after main");
             mainVbox.getChildren().addAll(firstHbox, secondHbox, thirdHbox, fourthHbox);
             setContentOfScrollPane(mainVbox);
     }
@@ -133,19 +136,14 @@ public class MainWindowController extends BaseController{
 
     private VBox prepareDailyBox(List<Weather> data){
         VBox mainBax = new VBox();
-        //tutaj css oooooooooooooooooooooooooooooooooooooooooooooooo
-        System.out.println("PrepareDailyBox1");
         mainBax.getStylesheets().add(String.valueOf(Style.DARK));
         for(int i =0; i<data.size(); i++) {
 
             WeatherClient weatherClient = (WeatherClient) data.get(i);
             String[] dateAsArray = weatherClient.splitDate(weatherClient.getDate());
             VBox weatherInfo = new VBox();
-            //tutaj css oooooooooooooooooooooooooooooooooooooooooooooooo
-            System.out.println("PrepareDailyBox2");
             weatherInfo.getStylesheets().add(String.valueOf(Style.DARK));
             HBox wrapBox = new HBox();
-            System.out.println("PrepareDailyBox3");
             wrapBox.getStylesheets().add(String.valueOf(Style.DARK));
             Label date = new Label();
             Label temp = new Label();
@@ -171,8 +169,6 @@ public class MainWindowController extends BaseController{
     private VBox prepareVBoxWithFillInLabels(List<Weather> data, String hour, String year){
 
         VBox mainBax = new VBox();
-        //tutaj css oooooooooooooooooooooooooooooooooooo
-        System.out.println("PrepareVBox with fill in labels1");
         mainBax.getStylesheets().add(String.valueOf(Style.DARK));
 
         for(int i =0; i<data.size(); i++){
@@ -183,8 +179,6 @@ public class MainWindowController extends BaseController{
             if(dateAsArray[1].endsWith(hour) && dateAsArray[0].startsWith(year)) {
                 VBox weatherInfo = new VBox();
                 HBox wrapBox = new HBox();
-                //tutaj kolejny css oooooooooooooooooooooooooooooooo
-                System.out.println("PrepareVBox with fill in labels2");
                 wrapBox.getStylesheets().add(String.valueOf(Style.DARK));
                 weatherInfo.getStylesheets().add(String.valueOf(Style.DARK));
                 Label date = new Label();
@@ -211,16 +205,17 @@ public class MainWindowController extends BaseController{
     }
 
     private void setContentOfScrollPane(VBox vBox){
-        System.out.println("before scroll pane");
+
         this.scrollPane.getStylesheets().add(String.valueOf(Style.DARK));
         this.scrollPane.setContent(vBox);
-        System.out.println("after scroll pane");
-        //tutaj css ooooooooooooooooooooooooooooooo
-
         this.cityNameLabel.setText(this.cityNameTextField.getText());
     }
 
-
+    @FXML
+    void closeButton() {
+        Stage stage = (Stage) cityNameTextField.getScene().getWindow();
+        stage.close();
+    }
 
     @FXML
     public void initialize(){

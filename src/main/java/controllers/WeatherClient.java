@@ -44,10 +44,6 @@ public class WeatherClient extends Weather{
         return date;
     }
 
-    public String getIcon() {
-        return icon;
-    }
-
     public String getDescription() {
         return description;
     }

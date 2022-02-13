@@ -15,14 +15,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="350.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar layoutY="1.0" prefHeight="25.0" prefWidth="441.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#closeButton" text="Close" />
             </items>
           </Menu>
         </menus>
@@ -41,7 +40,7 @@
                         <Insets left="5.0" />
                      </opaqueInsets>
                   </TextField>
-                  <Button mnemonicParsing="false"  onAction="#findCityButton" text="Apply Button">
+                  <Button mnemonicParsing="false" onAction="#findCityButton" text="Apply Button">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>

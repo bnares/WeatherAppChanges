@@ -35,10 +35,8 @@ public class ProcessWeatherData {
             }
 
         }catch (NullPointerException e){
-
             System.out.println(e.getMessage());
             throw new CreatingObjectExcption();
-
         }
         return object;
     }

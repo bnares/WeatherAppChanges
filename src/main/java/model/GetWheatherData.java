@@ -28,7 +28,7 @@ public class GetWheatherData {
     private String getCurrentDayWeatherData() throws ApiException {
         StringBuffer response;
         String textField = this.getCityName();
-        String url = "https://api.openweathermap.org/data/2.5/weather?q=" + URLEncoder.encode(textField, StandardCharsets.UTF_8) + "&appid=ac3ab545014509bfe6bd90e10adf9a94&cnt=46&units=metric";
+        String url = "https://api.openweathermap.org/data/2.5/weather?q=" + URLEncoder.encode(textField, StandardCharsets.UTF_8) + "&appid=myid&cnt=46&units=metric";
         response = connectWithNetWebForWheatherData(url);
         return response.toString();
     }
@@ -39,7 +39,7 @@ public class GetWheatherData {
 
     private String sendRequestForFourDaysWheatherData() throws ApiException {
         StringBuffer response;
-        String url = "https://api.openweathermap.org/data/2.5/forecast?q="+ URLEncoder.encode(this.cityName, StandardCharsets.UTF_8)+"&appid=ac3ab545014509bfe6bd90e10adf9a94&cnt=46&units=metric";
+        String url = "https://api.openweathermap.org/data/2.5/forecast?q="+ URLEncoder.encode(this.cityName, StandardCharsets.UTF_8)+"&appid=apiid&cnt=46&units=metric";
         response = connectWithNetWebForWheatherData(url);
         return response.toString();
     }
